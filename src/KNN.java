@@ -22,7 +22,7 @@ public class KNN {
 		return ((actual - min) / (max - min));
 	}
 
-	private void knnCalculation() {
+	public void knnCalculation() {
 		double distance;
 		for (int testIndex = 0; testIndex < customerTest.size(); testIndex++) {
 			for (int trainIndex = 0; trainIndex < customerTrain.size(); trainIndex++) {
@@ -40,6 +40,7 @@ public class KNN {
 			Collections.sort(customerNearest);
 			clasification(testIndex);
 		}
+		System.out.println(customerTest);
 	}
 
 	public void clasification(int newCustomerIndex) {
