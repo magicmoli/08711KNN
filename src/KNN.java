@@ -8,7 +8,6 @@ import java.util.Map;
 public class KNN {
 
 	private final int k;
-	private double errorPorcentage;
 	private List<ArrayList<String>> arrayTrain;
 	private List<ArrayList<String>> arrayTest;
 	private List<ArrayList<Double>> attributeMaxMin;
@@ -100,8 +99,7 @@ public class KNN {
 													.get(0), 2);
 					}
 				}
-				//similarityScore = 1 / Math.sqrt(similarityScore);
-				similarityScore = Math.sqrt(similarityScore);
+				similarityScore = 1 / Math.sqrt(similarityScore);
 				customerNearest.add(new NearestCustomer(similarityScore,
 						arrayTrain.get(trainIndex).get(
 								arrayTrain.get(0).size() - 1)));
@@ -122,8 +120,6 @@ public class KNN {
 			System.out.println();
 			System.out.println();*/
 			
-			//clasificationSimilarityScore(testIndex);
-			
 			clasificationCommonClass(testIndex);
 			customerNearest.clear(); 
 		}
@@ -133,31 +129,6 @@ public class KNN {
 	    	System.out.println(strings);
 		}
 	}
-
-	/*public void clasificationSimilarityScore(int testIndex) {
-		Map<String,Double> classMap = new HashMap<String,Double>();
-		double sumSimilarityScore;
-		double similarityScoreMax = 0.0;
-		String similarityClass = "";
-		for (int numNeighbor = 0; numNeighbor < k; numNeighbor++) {
-			sumSimilarityScore = 0.0;
-			if (classMap.get(customerNearest.get(numNeighbor).getClassType()) != null) {
-				sumSimilarityScore = classMap.get(customerNearest.get(
-						numNeighbor).getClassType())
-						+ customerNearest.get(numNeighbor).getSimilarityScore();
-				classMap.put(customerNearest.get(numNeighbor).getClassType(), sumSimilarityScore);
-			} else {
-				sumSimilarityScore = customerNearest.get(numNeighbor).getSimilarityScore();
-				classMap.put(customerNearest.get(numNeighbor).getClassType(), sumSimilarityScore);
-			}
-			if (sumSimilarityScore > similarityScoreMax) {
-				similarityScoreMax = sumSimilarityScore;
-				similarityClass = customerNearest.get(numNeighbor).getClassType();
-			}
-		}
-		System.out.println("Class: " + similarityClass + " - Similarity score: " + similarityScoreMax);
-		//arrayTest.get(testIndex).set((arrayTest.get(testIndex).size() - 1), similarityClass);
-	}*/
 	
 	public void clasificationCommonClass(int testIndex) {
 		Map<String,Integer> classMap = new HashMap<String,Integer>();

@@ -16,8 +16,8 @@ public class NearestCustomer implements Comparable<NearestCustomer> {
 	}
 
 	public int compareTo(NearestCustomer other) {
-		if (this.getSimilarityScore() < other.getSimilarityScore()) return -1;
-        if (this.getSimilarityScore() > other.getSimilarityScore()) return 1;
+		if (this.getSimilarityScore() < other.getSimilarityScore()) return 1;
+        if (this.getSimilarityScore() > other.getSimilarityScore()) return -1;
         if (this.getClassType().compareTo(other.getClassType()) != 0) return this.getClassType().compareTo(other.getClassType());
         return 0;
 	}
