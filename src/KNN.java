@@ -8,6 +8,7 @@ import java.util.Map;
 public class KNN {
 
 	private final int k;
+	private double errorPorcentage;
 	private List<ArrayList<String>> arrayTrain;
 	private List<ArrayList<String>> arrayTest;
 	private List<ArrayList<Double>> attributeMaxMin;
@@ -33,7 +34,7 @@ public class KNN {
 		for (int column=0; column<arrayTrain.get(0).size(); column++) {
 			error = false;
 			max = 0;
-			min = 1000000000.0;
+			min = 9999999999.999;
 			try {
 				for (int row=0; row<arrayTrain.size(); row++) {
 					if (Double.parseDouble(arrayTrain.get(row).get(column)) > max)
@@ -88,7 +89,7 @@ public class KNN {
 													.get(arrayTrain.get(
 															trainIndex).get(
 															attributeIndex))
-													.get(0), 2);
+													.get(1), 2);
 						else
 							similarityScore = similarityScore
 									+ Math.pow(
@@ -96,10 +97,11 @@ public class KNN {
 													.get(arrayTrain.get(
 															trainIndex).get(
 															attributeIndex))
-													.get(1), 2);
+													.get(0), 2);
 					}
 				}
-				similarityScore = 1 / Math.sqrt(similarityScore);
+				//similarityScore = 1 / Math.sqrt(similarityScore);
+				similarityScore = Math.sqrt(similarityScore);
 				customerNearest.add(new NearestCustomer(similarityScore,
 						arrayTrain.get(trainIndex).get(
 								arrayTrain.get(0).size() - 1)));
