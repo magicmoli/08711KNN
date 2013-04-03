@@ -8,19 +8,23 @@ import java.util.Map;
 public class KNN {
 
 	private final int k;
+	private double similarityAverage;
 	private List<ArrayList<String>> arrayTrain;
 	private List<ArrayList<String>> arrayTest;
 	private List<ArrayList<Double>> attributeMaxMin;
 	private List<NearestCustomer> customerNearest;
 	private Map<String, ArrayList<Double>> similarityMatrix;
+	private List<Double> attributeWeight;
 
 	public KNN(List<ArrayList<String>> arrayTrain,
 			List<ArrayList<String>> arrayTest,
-			Map<String, ArrayList<Double>> similarityMatrix, int k) {
+			Map<String, ArrayList<Double>> similarityMatrix, List<Double> attributeWeight, int k) {
 		this.k = k;
+		this.similarityAverage = 0;
 		this.arrayTrain = arrayTrain;
 		this.arrayTest = arrayTest;
 		this.similarityMatrix = similarityMatrix;
+		this.attributeWeight = attributeWeight;
 		customerNearest = new ArrayList<NearestCustomer>();
 		attributeMaxMin = new ArrayList<ArrayList<Double>>();
 		attributeMaxMinCalculation();
@@ -52,9 +56,9 @@ public class KNN {
 	}
 	
 	private double normalize(double value, int attributeIndex) {
-		return ((value - attributeMaxMin.get(attributeIndex).get(0)) / (attributeMaxMin
+		return (((value - attributeMaxMin.get(attributeIndex).get(0)) / (attributeMaxMin
 				.get(attributeIndex).get(1) - attributeMaxMin.get(
-				attributeIndex).get(0)));
+				attributeIndex).get(0))) * attributeWeight.get(attributeIndex));
 	}
 
 	public void similarityScoreCalculation() {
@@ -83,20 +87,20 @@ public class KNN {
 										arrayTest.get(testIndex).get(
 												attributeIndex)) == 0)
 							similarityScore = similarityScore
-									+ Math.pow(
+									+ Math.pow((
 											similarityMatrix
 													.get(arrayTrain.get(
 															trainIndex).get(
 															attributeIndex))
-													.get(1), 2);
+													.get(1)) * attributeWeight.get(attributeIndex), 2);
 						else
 							similarityScore = similarityScore
-									+ Math.pow(
+									+ Math.pow((
 											similarityMatrix
 													.get(arrayTrain.get(
 															trainIndex).get(
 															attributeIndex))
-													.get(0), 2);
+													.get(0)) * attributeWeight.get(attributeIndex), 2);
 					}
 				}
 				similarityScore = 1 / Math.sqrt(similarityScore);
@@ -104,22 +108,7 @@ public class KNN {
 						arrayTrain.get(trainIndex).get(
 								arrayTrain.get(0).size() - 1)));
 			}
-			
-			//Print disorder list
-			/*for (NearestCustomer strings : customerNearest) {
-			    System.out.println(strings.getClassType() + " - " + strings.getSimilarityScore());
-			}
-			System.out.println();*/
-			
 			Collections.sort(customerNearest);
-			
-			//Print order list
-			/*for (NearestCustomer strings : customerNearest) {
-			    System.out.println(strings.getClassType() + " - " + strings.getSimilarityScore());
-			}
-			System.out.println();
-			System.out.println();*/
-			
 			clasificationCommonClass(testIndex);
 			customerNearest.clear(); 
 		}
@@ -136,6 +125,7 @@ public class KNN {
 		int commonClassMax = 0;
 		String similarityClass = "";
 		for (int numNeighbor = 0; numNeighbor < k; numNeighbor++) {
+			System.out.println(customerNearest.get(numNeighbor).getClassType() + " - " + customerNearest.get(numNeighbor).getSimilarityScore());
 			if (classMap.get(customerNearest.get(numNeighbor).getClassType()) != null) {
 				commonClass = classMap.get(customerNearest.get(
 						numNeighbor).getClassType())
@@ -150,6 +140,7 @@ public class KNN {
 				similarityClass = customerNearest.get(numNeighbor).getClassType();
 			}
 		}
+		System.out.println();
 		arrayTest.get(testIndex).set((arrayTest.get(testIndex).size() - 1), similarityClass);
 	}
 }

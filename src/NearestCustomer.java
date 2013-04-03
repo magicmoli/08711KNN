@@ -3,8 +3,8 @@ public class NearestCustomer implements Comparable<NearestCustomer> {
 	private double similarityScore;
 	private String classType;
 	
-	public NearestCustomer(double distance, String classType) {
-		this.similarityScore = distance;
+	public NearestCustomer(double similarityScore, String classType) {
+		this.similarityScore = similarityScore;
 		this.classType = classType;
 	}
 	

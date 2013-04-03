@@ -9,7 +9,7 @@ public class Main {
 	public static void main(String[] args) {		
 		ReadCSV readCSV = new ReadCSV();
 		readCSV.setInputFile("/Users/basdag/Desktop/trainProdSelection.csv");
-		List<ArrayList<String>> trainData = new ArrayList<ArrayList<String>>();;
+		List<ArrayList<String>> trainData = new ArrayList<ArrayList<String>>();
 		try {
 			trainData = readCSV.read();
 		} catch (IOException e) {
@@ -23,6 +23,8 @@ public class Main {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		List<Double> attributeWeight = new ArrayList<Double>(Arrays.asList(1.0, 1.0, 1.0, 1.0, 1.0, 1.0));
 		
 		Map<String, ArrayList<Double>> similarityMatrix = new HashMap<String, ArrayList<Double>>();
 		similarityMatrix.put("spend<<saving", new ArrayList<Double>(Arrays.asList(1.0, 0.0)));
@@ -39,7 +41,7 @@ public class Main {
 		System.out.println();
 		System.out.println();
 		
-		KNN knn = new KNN(trainData, testData, similarityMatrix, 3);
+		KNN knn = new KNN(trainData, testData, similarityMatrix, attributeWeight, 3);
 		knn.similarityScoreCalculation();
 	}
 }
